@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @personal_reference.first_name %>
+</p>
+
+<p>
+  <strong>Second name:</strong>
+  <%= @personal_reference.second_name %>
+</p>
+
+<p>
+  <strong>First last name:</strong>
+  <%= @personal_reference.first_last_name %>
+</p>
+
+<p>
+  <strong>Second last name:</strong>
+  <%= @personal_reference.second_last_name %>
+</p>
+
+<p>
+  <strong>Cell phone number:</strong>
+  <%= @personal_reference.cell_phone_number %>
+</p>
+
+<p>
+  <strong>Requisition:</strong>
+  <%= @personal_reference.requisition %>
+</p>
+
+<%= link_to 'Edit', edit_personal_reference_path(@personal_reference) %> |
+<%= link_to 'Back', personal_references_path %>

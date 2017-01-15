@@ -1,0 +1,1 @@
+json.array! @personal_references, partial: 'personal_references/personal_reference', as: :personal_reference

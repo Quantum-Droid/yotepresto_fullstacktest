@@ -1,0 +1,2111 @@
+  [1m[36m (114.6ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (176.0ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateProfiles (20170114185605)
+  [1m[35m (148.9ms)[0m  CREATE TABLE `profiles` (`id` int(11) auto_increment PRIMARY KEY, `first_name` varchar(255), `second_name` varchar(255), `first_last_name` varchar(255), `second_last_name` varchar(255), `birth_date` varchar(255), `curp` varchar(255), `rfc` varchar(255), `gender` varchar(255), `birth_state` varchar(255), `phone_number` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20170114185605')
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRequisitions (20170114185810)
+  [1m[35m (134.5ms)[0m  CREATE TABLE `requisitions` (`id` int(11) auto_increment PRIMARY KEY, `income` varchar(255), `address_years` varchar(255), `company_years` varchar(255), `marital_status` varchar(255), `requested_amount` varchar(255), `payment_terms` varchar(255), `bank` varchar(255), `comment` varchar(255), `company_name` varchar(255), `company_phone_number` varchar(255), `dependents_number` varchar(255), `company_position` varchar(255), `has_sgmm` varchar(255), `has_imss` varchar(255), `has_car` varchar(255), `profile_id` int(11), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL,  INDEX `index_requisitions_on_profile_id`  (`profile_id`) ) ENGINE=InnoDB
+  [1m[36m (169.2ms)[0m  [1mALTER TABLE `requisitions` ADD CONSTRAINT `fk_rails_16f5ceddd0`
+FOREIGN KEY (`profile_id`)
+  REFERENCES `profiles` (`id`)
+[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20170114185810')[0m
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to CreatePersonalReferences (20170114185906)
+  [1m[36m (149.7ms)[0m  [1mCREATE TABLE `personal_references` (`id` int(11) auto_increment PRIMARY KEY, `first_name` varchar(255), `second_name` varchar(255), `first_last_name` varchar(255), `second_last_name` varchar(255), `cell_phone_number` varchar(255), `requisition_id` int(11), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL,  INDEX `index_personal_references_on_requisition_id`  (`requisition_id`) ) ENGINE=InnoDB[0m
+  [1m[35m (153.7ms)[0m  ALTER TABLE `personal_references` ADD CONSTRAINT `fk_rails_7bc98ed83d`
+FOREIGN KEY (`requisition_id`)
+  REFERENCES `requisitions` (`id`)
+
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20170114185906')
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (1.1ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'personal_references'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `personal_references`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'profiles'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `profiles`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'requisitions'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `requisitions`
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20170114202217)
+  [1m[35m (610.4ms)[0m  CREATE TABLE `users` (`id` int(11) auto_increment PRIMARY KEY, `email` varchar(255), `password` varchar(255), `facebook_account` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20170114202217')
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddUserToProfiles (20170114202340)
+  [1m[35m (165.6ms)[0m  ALTER TABLE `profiles` ADD `user_id` int(11)
+  [1m[36m (238.4ms)[0m  [1mCREATE  INDEX `index_profiles_on_user_id`  ON `profiles` (`user_id`) [0m
+  [1m[35m (282.5ms)[0m  ALTER TABLE `profiles` ADD CONSTRAINT `fk_rails_e424190865`
+FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`)
+
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20170114202340')
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'personal_references'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `personal_references`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'profiles'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `profiles`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'requisitions'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `requisitions`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'users'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `users`
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to AddPasswordDigestToUser (20170114203948)
+  [1m[35m (113.8ms)[0m  ALTER TABLE `users` ADD `password_digest` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20170114203948')
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'personal_references'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `personal_references`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'profiles'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `profiles`
+  [1m[36m (0.4ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'requisitions'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `requisitions`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'yotepresto_fullstacktest_development'
+  AND fk.table_name = 'users'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `users`
+
+
+Started GET "/" for ::1 at 2017-01-14 15:18:12 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Processing by RequisitionsController#index as HTML
+  [1m[35mRequisition Load (0.8ms)[0m  SELECT `requisitions`.* FROM `requisitions`
+  Rendered requisitions/index.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 1742ms (Views: 1704.1ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-14 15:18:14 -0600
+
+
+Started GET "/" for ::1 at 2017-01-15 16:00:02 -0600
+Processing by RequisitionsController#index as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:00:02 -0600
+
+SyntaxError (/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/controllers/sessions_controller.rb:19: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...redirect_to root_path, notice "¡Bienvenido#{(' ' + user.pro...
+...                               ^
+/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/controllers/sessions_controller.rb:21: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+...redirect_to login_path, alert "El usuario y contraseña no c...
+...                               ^
+/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/controllers/sessions_controller.rb:28: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+		redirect_to login_path, notice "Sesión cerrada."
+		                                ^):
+  app/controllers/sessions_controller.rb:19: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+  app/controllers/sessions_controller.rb:21: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+  app/controllers/sessions_controller.rb:28: syntax error, unexpected tSTRING_BEG, expecting keyword_do or '{' or '('
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (13.9ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (5.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (3.1ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (126.1ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (1.1ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (161.0ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (332.9ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:12 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:38 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 23ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 2ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:04:39 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:14:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:15:01 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by RequisitionsController#index as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:19:10 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 4ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:20:37 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:57 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:21:58 -0600
+Processing by SessionsController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:27:32 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (29.7ms)
+Completed 500 Internal Server Error in 99ms (ActiveRecord: 0.0ms)
+
+ActionView::Template::Error (undefined method `bootstrap_form_for' for #<#<Class:0x007f9c85bfb368>:0x007f9c85beaf68>):
+    4: <div class="col-md-6 col-md-offset-3">
+    5: 	<div class="simple-box">
+    6: 	<h1>Bienvenido a Credito para ti</h1>
+    7: 	<%= bootstrap_form_for(:worker, url: sessions_path) do |f| %>
+    8: 		
+    9: 		<%= f.text_field :username, icon: "user" %>
+   10: 		<%= f.password_field :password, icon: "lock" %>
+  app/views/sessions/new.html.erb:7:in `_app_views_sessions_new_html_erb___2321764853049229747_70155117566980'
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (7.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (4.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (84.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (69.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (149.5ms)
+
+
+Started PUT "/__web_console/repl_sessions/27500d97ec80313998f8338bed27477a" for ::1 at 2017-01-15 16:27:53 -0600
+
+
+Started GET "/" for ::1 at 2017-01-15 16:35:39 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Processing by RequisitionsController#index as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 25ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:35:39 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (38.6ms)
+Completed 500 Internal Server Error in 52ms (ActiveRecord: 0.0ms)
+
+ActionView::Template::Error (undefined method `bootstrap_form_for' for #<#<Class:0x007fa9d2343798>:0x007fa9d23234e8>):
+    4: <div class="col-md-6 col-md-offset-3">
+    5: 	<div class="simple-box">
+    6: 	<h1>Bienvenido a Credito para ti</h1>
+    7: 	<%= bootstrap_form_for(:worker, url: sessions_path) do |f| %>
+    8: 		
+    9: 		<%= f.text_field :username, icon: "user" %>
+   10: 		<%= f.password_field :password, icon: "lock" %>
+  app/views/sessions/new.html.erb:7:in `_app_views_sessions_new_html_erb__165315961760052617_70183684558840'
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (8.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.1ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (84.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (68.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.3ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (141.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:40:45 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (33.1ms)
+Completed 500 Internal Server Error in 38ms (ActiveRecord: 0.0ms)
+
+ActionView::Template::Error (undefined method `bootstrap_form_for' for #<#<Class:0x007fa9d2343798>:0x007fa9d5336f18>):
+    4: <div class="col-md-6 col-md-offset-3">
+    5: 	<div class="simple-box">
+    6: 	<h1>Bienvenido a Credito para ti</h1>
+    7: 	<%= bootstrap_form_for(:worker, url: sessions_path) do |f| %>
+    8: 		
+    9: 		<%= f.text_field :username, icon: "user" %>
+   10: 		<%= f.password_field :password, icon: "lock" %>
+  app/views/sessions/new.html.erb:7:in `_app_views_sessions_new_html_erb__165315961760052617_70183684558840'
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (8.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (90.9ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (59.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (134.7ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:45:54 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (30.5ms)
+Completed 500 Internal Server Error in 36ms (ActiveRecord: 0.0ms)
+
+ActionView::Template::Error (undefined method `bootstrap_form_for' for #<#<Class:0x007fa9d2343798>:0x007fa9d69e22d0>):
+    4: <div class="col-md-6 col-md-offset-3">
+    5: 	<div class="simple-box">
+    6: 	<h1>Bienvenido a Credito para ti</h1>
+    7: 	<%= bootstrap_form_for(:worker, url: sessions_path) do |f| %>
+    8: 		
+    9: 		<%= f.text_field :username, icon: "user" %>
+   10: 		<%= f.password_field :password, icon: "lock" %>
+  app/views/sessions/new.html.erb:7:in `_app_views_sessions_new_html_erb__165315961760052617_70183684558840'
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (8.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (4.3ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.2ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (87.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (59.9ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.6ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (131.4ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:49:27 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (54.2ms)
+Completed 500 Internal Server Error in 82ms (ActiveRecord: 0.0ms)
+
+SyntaxError (/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/views/layouts/application.html.erb:45: syntax error, unexpected '<'
+              <% if is_logged_in? 
+               ^
+/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/views/layouts/application.html.erb:45: syntax error, unexpected tFID, expecting keyword_end
+              <% if is_logged_in? 
+                                 ^
+/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/views/layouts/application.html.erb:88: syntax error, unexpected keyword_ensure, expecting end-of-input):
+  app/views/layouts/application.html.erb:45: syntax error, unexpected '<'
+  app/views/layouts/application.html.erb:45: syntax error, unexpected tFID, expecting keyword_end
+  app/views/layouts/application.html.erb:88: syntax error, unexpected keyword_ensure, expecting end-of-input
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (7.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.2ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (90.1ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (63.9ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (140.9ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:50:04 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.4ms)
+Completed 200 OK in 990ms (Views: 989.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:50:05 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:50:05 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:50:05 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 16:50:05 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:50:05 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:50:06 -0600
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:50:55 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.5ms)
+Completed 200 OK in 39ms (Views: 38.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:51:27 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (3.2ms)
+Completed 200 OK in 41ms (Views: 40.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 16:51:27 -0600
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:51:37 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.8ms)
+Completed 200 OK in 33ms (Views: 32.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 16:51:37 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 16:51:38 -0600
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:53:01 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.9ms)
+Completed 200 OK in 41ms (Views: 40.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 16:53:01 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:02 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:02 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:02 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 16:53:02 -0600
+
+
+Started GET "/login" for ::1 at 2017-01-15 16:53:35 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (2.7ms)
+Completed 200 OK in 44ms (Views: 43.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 16:53:35 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 16:53:36 -0600
+
+
+Started GET "/login" for ::1 at 2017-01-15 17:05:07 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.8ms)
+Completed 200 OK in 41ms (Views: 40.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 17:05:08 -0600
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:05:10 -0600
+Processing by ProfilesController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 17:05:10 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (2.1ms)
+Completed 200 OK in 38ms (Views: 37.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:05:16 -0600
+Processing by ProfilesController#new as HTML
+Redirected to http://localhost:3000/login
+Filter chain halted as :ensure_login rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 17:05:16 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 40ms (Views: 39.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for ::1 at 2017-01-15 17:06:21 -0600
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 38ms (Views: 36.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:21 -0600
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:06:24 -0600
+Processing by ProfilesController#new as HTML
+  Rendered profiles/_form.html.erb (19.0ms)
+  Rendered profiles/new.html.erb within layouts/application (21.1ms)
+Completed 200 OK in 114ms (Views: 54.4ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:06:47 -0600
+Processing by ProfilesController#new as HTML
+  Rendered profiles/_form.html.erb (9.7ms)
+  Rendered profiles/new.html.erb within layouts/application (12.2ms)
+Completed 200 OK in 72ms (Views: 70.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:06:47 -0600
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:07:08 -0600
+Processing by ProfilesController#new as HTML
+  Rendered profiles/_form.html.erb (4.4ms)
+  Rendered profiles/new.html.erb within layouts/application (6.2ms)
+Completed 200 OK in 38ms (Views: 37.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 17:07:08 -0600
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:07:26 -0600
+Processing by ProfilesController#new as HTML
+  Rendered profiles/_form.html.erb (6.0ms)
+  Rendered profiles/new.html.erb within layouts/application (7.9ms)
+Completed 200 OK in 40ms (Views: 39.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 17:07:27 -0600
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:07:44 -0600
+Processing by ProfilesController#new as HTML
+  Rendered profiles/_form.html.erb (5.7ms)
+  Rendered profiles/new.html.erb within layouts/application (7.4ms)
+Completed 200 OK in 42ms (Views: 41.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/personal_references.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/profiles.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/sessions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/requisitions.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/scaffolds.self-2fa2c8c27e4c4dcbdc3ec8a36c9c7660348cb327d26119373a8fa4e7380b2d68.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/users.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/jquery_ujs.self-784a997f6726036b1993eb2217c9cb558e1cbb801c6da88105588c56f13b466a.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/jquery.self-bd7ddd393353a8d2480a622e80342adf488fb6006d667e8b42e4c0073393abee.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/personal_references.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/requisitions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/profiles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/sessions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/users.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e5876bdc39dee783419a69d7ca819.js?body=1" for ::1 at 2017-01-15 17:07:45 -0600
+
+
+Started GET "/singup" for ::1 at 2017-01-15 17:07:53 -0600
+Processing by ProfilesController#new as HTML
+  Rendered profiles/_form.html.erb (1.7ms)
+  Rendered profiles/new.html.erb within layouts/application (3.6ms)
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.0ms)
+
+SyntaxError (/Users/diegomf/Documents/Developer/Yotepresto/yotepresto_fullstacktest/app/views/profiles/_form.html.erb:15: syntax error, unexpected tLABEL, expecting '='
+...buffer.append=( f.label, label: "Hue" );@output_buffer.safe_...
+...                               ^):
+  app/views/profiles/_form.html.erb:15: syntax error, unexpected tLABEL, expecting '='
+  app/views/profiles/new.html.erb:3:in `_app_views_profiles_new_html_erb___3985361808793685529_70268405888600'
+
+
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_source.erb (8.9ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0@global/gems/actionpack-4.2.6/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (86.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_markup.html.erb (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_inner_console_markup.html.erb within layouts/inlined_string (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/_prompt_box_markup.html.erb within layouts/inlined_string (0.3ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/style.css.erb within layouts/inlined_string (0.7ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/console.js.erb within layouts/javascript (57.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/main.js.erb within layouts/javascript (0.4ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/error_page.js.erb within layouts/javascript (0.5ms)
+  Rendered /Users/diegomf/.rvm/gems/ruby-2.3.0/gems/web-console-2.3.0/lib/web_console/templates/index.html.erb (127.3ms)

@@ -1,0 +1,1 @@
+json.partial! "personal_references/personal_reference", personal_reference: @personal_reference
