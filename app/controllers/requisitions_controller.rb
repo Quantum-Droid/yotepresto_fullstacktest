@@ -1,5 +1,6 @@
 class RequisitionsController < ApplicationController
   before_action :set_requisition, only: [:show, :edit, :update, :destroy]
+  before_action :set_user
 
   # GET /requisitions
   # GET /requisitions.json
@@ -14,6 +15,11 @@ class RequisitionsController < ApplicationController
 
   # GET /requisitions/new
   def new
+    user = current_user
+    if !user.has_profile?
+      redirect_to profile_path, notice: "Necesitas completar tu información personal antes de crear una solicitud."
+      return
+    end
     @requisition = Requisition.new
   end
 
@@ -65,6 +71,10 @@ class RequisitionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_requisition
       @requisition = Requisition.find(params[:id])
+    end
+
+    def set_user
+      @user = current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

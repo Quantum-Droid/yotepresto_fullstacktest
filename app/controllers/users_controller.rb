@@ -25,6 +25,17 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    @user = User.new(user_params)
+
+    puts "LOG: got user params #{user_params}"
+    puts "LOG: User email: #{@user.email}. Password: #{@user.password}"
+
+    # Check if empty
+    # if @user.password.empty? || @user.email.empty?
+    #   flash[:notice] = "Hay campos vacíos."
+    #   return
+    # end
+
     # Check if user already exists
     if User.find_by(email: @user.email)
       flash[:notice] = "El usuario ya existe."
@@ -32,18 +43,18 @@ class UsersController < ApplicationController
     end
 
     # Check if user and password do not match
-    if @user.password != @user.password_repeat
-      flash[:notice] = "Las contraseñas no coinciden."
-      return
-    end
+    # if @user.password != @user.password_digest
+    #   flash[:notice] = "Las contraseñas no coinciden."
+    #   return
+    # end
+
+    # @user.password_digest = nil
 
     # TO-DO: facebook stuff
 
-    @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: 'Cuenta creada exitosamente.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -75,6 +86,14 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # --- HELPER METHODS ---
+
+  def has_profile?
+    return @user.profile ? true : false
+  end
+
+  # --- PRIVATE METHODS ---
 
   private
     # Use callbacks to share common setup or constraints between actions.

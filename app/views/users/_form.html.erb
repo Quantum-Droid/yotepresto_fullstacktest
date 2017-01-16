@@ -1,32 +1,10 @@
-<%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label "Correo electrónico (será el usuario de tu cuenta)" %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label "Contraseña" %><br>
-    <%= f.text_field :password %>
-  </div>
-  <div class="field">
-    <%= f.label "Repetir contraseña" %><br>
-    <%= f.text_field :password_repeat %>
-  </div>
+<%= bootstrap_form_for(@user) do |f| %>
+  
+  <%= f.text_field :email, label: 'Correo electrónico (será el usuario de tu cuenta)' %>
+  <%= f.password_field :password, label: 'Contraseña' %>
   <div>
-    <button>Contactar con Facebook</button>
+    <button>Conectar cuenta con Facebook</button>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <%= f.submit 'Crear cuenta', class: 'btn btn-info' %>
+
 <% end %>

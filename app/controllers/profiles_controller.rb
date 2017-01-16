@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_user
 
   # GET /profiles
   # GET /profiles.json
@@ -70,6 +71,10 @@ class ProfilesController < ApplicationController
   # --- PRIVATE METHODS ---
 
   private
+    def set_user
+      @user = current_user
+    end
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_profile
       @profile = Profile.find(params[:id])

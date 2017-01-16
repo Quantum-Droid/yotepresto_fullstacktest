@@ -19,8 +19,8 @@ class SessionsController < ApplicationController
 		user = User.find_by(email: user_email).try(:authenticate, user_password)
 
 		if user
-			session[:user_id] = user_id
-			redirect_to root_path, notice: "¡Bienvenido#{(' ' + user.profile.all_names) unless user.profile.all_names.empty?}!"
+			session[:user_id] = user.id
+			redirect_to root_path, notice: "¡Bienvenido #{user.email}!"
 		else
 			redirect_to login_path, alert: "El usuario y contraseña no coinciden o no existen."
 		end

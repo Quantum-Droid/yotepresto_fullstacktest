@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy', as: 'logout'
   get '/singup', to: 'users#new', as: 'singup'
 
+  # Profile
+  get '/my/profile', to: 'profile#edit', as: 'profile'
+
   root 'requisitions#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
