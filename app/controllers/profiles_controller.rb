@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
   before_action :set_user
+  before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   # GET /profiles
   # GET /profiles.json
@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
   # GET /profiles/1.json
   def show
     if !@user.has_profile?
-      redirect_to create_profile_path
+      redirect_to new_profile_path
       return
     end
 
@@ -22,6 +22,10 @@ class ProfilesController < ApplicationController
 
   # GET /profiles/new
   def new
+    if @user.has_profile?
+      redirect_to @user.profile, notice: @user.has_complete_profile_message
+      return
+    end
     @profile = Profile.new
   end
 
@@ -81,7 +85,7 @@ class ProfilesController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_profile
-      @profile = Profile.find(params[:id])
+      @profile = @user.profile
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
