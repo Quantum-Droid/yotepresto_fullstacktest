@@ -17,7 +17,7 @@ class RequisitionsController < ApplicationController
   def new
     user = current_user
     if !user.has_profile?
-      redirect_to profile_path, notice: "Necesitas completar tu información personal antes de crear una solicitud."
+      redirect_to set_profile_path, notice: "Necesitas completar tu información personal antes de crear una solicitud."
       return
     end
     @requisition = Requisition.new

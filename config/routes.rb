@@ -10,9 +10,10 @@ Rails.application.routes.draw do
   get '/singup', to: 'users#new', as: 'singup'
 
   # Profile
-  get '/my/profile', to: 'profile#edit', as: 'profile'
+  get '/my/profile', to: 'profiles#new', as: 'set_profile'
+  get '/my/requisitions', to: 'requisitions#index'
 
-  root 'requisitions#index'
+  root 'sessions#new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -11,6 +11,13 @@ class ProfilesController < ApplicationController
   # GET /profiles/1
   # GET /profiles/1.json
   def show
+    if !@user.has_profile?
+      redirect_to create_profile_path
+      return
+    end
+
+    @profile = @user.profile
+    render :show, location: @profile
   end
 
   # GET /profiles/new
@@ -26,6 +33,9 @@ class ProfilesController < ApplicationController
   # POST /profiles.json
   def create
     @profile = Profile.new(profile_params)
+    @user.profile = @profile
+    @user.save
+    puts "LOG: created profile #{@user.profile} to user #{@user}"
 
     respond_to do |format|
       if @profile.save
@@ -62,19 +72,13 @@ class ProfilesController < ApplicationController
     end
   end
 
-  # --- HELPER METHODS ---
-
-  def all_names
-    return "#{@profile.first_name || ''}#{' ' unless !@profile.first_name || !@profile.second_name}#{@profile.second_name || ''}"
-  end
-
   # --- PRIVATE METHODS ---
 
   private
     def set_user
       @user = current_user
     end
-    
+
     # Use callbacks to share common setup or constraints between actions.
     def set_profile
       @profile = Profile.find(params[:id])

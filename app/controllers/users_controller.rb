@@ -87,12 +87,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # --- HELPER METHODS ---
-
-  def has_profile?
-    return @user.profile ? true : false
-  end
-
   # --- PRIVATE METHODS ---
 
   private

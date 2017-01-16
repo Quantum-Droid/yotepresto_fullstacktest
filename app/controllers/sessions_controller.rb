@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 	def new
 		if is_logged_in?
 			puts "LOG: logged in!"
-			redirect_to root_path, notice: "Ya existe una sesión activa."
+			redirect_to requisitions_path, notice: "Ya existe una sesión activa."
 		else
 			puts "LOG: not logged in"
 		end
@@ -20,15 +20,15 @@ class SessionsController < ApplicationController
 
 		if user
 			session[:user_id] = user.id
-			redirect_to root_path, notice: "¡Bienvenido #{user.email}!"
+			redirect_to requisitions_path, notice: "¡Bienvenido #{user.email}!"
 		else
-			redirect_to login_path, alert: "El usuario y contraseña no coinciden o no existen."
+			redirect_to root_path, alert: "El usuario y contraseña no coinciden o no existen."
 		end
 	end
 
 	# Terminates a session
 	def destroy
 		reset_session
-		redirect_to login_path, notice: "Sesión cerrada."
+		redirect_to root_path, notice: "Sesión cerrada."
 	end
 end
