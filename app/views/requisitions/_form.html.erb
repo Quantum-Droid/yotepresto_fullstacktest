@@ -11,71 +11,112 @@
     </div>
   <% end %>
 
+  <div>
+    Datos de la solicitud
+  </div>
+  <br>
   <div class="field">
-    <%= f.label :income %><br>
-    <%= f.text_field :income %>
+    <%= f.label "Monto a pedir" %><br>
+    <%= f.text_field :requested_amount, label: "Monto a pedir" %>
   </div>
   <div class="field">
-    <%= f.label :address_years %><br>
-    <%= f.text_field :address_years %>
+    <%= f.label "Términos de pago" %><br>
+    <%= f.text_field :payment_terms, label: "Términos de pago" %>
   </div>
   <div class="field">
-    <%= f.label :company_years %><br>
-    <%= f.text_field :company_years %>
+    <%= f.label "Institución bancaria" %><br>
+    <%= f.text_field :bank, label: "Institución bancaria" %>
+  </div>
+
+  <div>
+    Datos de su trabajo
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label "Nombre de la compañía" %><br>
+    <%= f.text_field :company_name, label: "Nombre de la compañía" %>
   </div>
   <div class="field">
-    <%= f.label :marital_status %><br>
-    <%= f.text_field :marital_status %>
+    <%= f.label "Teléfono de la compañía" %><br>
+    <%= f.text_field :company_phone_number, label: "Teléfono de la compañía" %>
   </div>
   <div class="field">
-    <%= f.label :requested_amount %><br>
-    <%= f.text_field :requested_amount %>
+    <%= f.label "Sueldo mensual" %><br>
+    <%= f.text_field :income, label: "Sueldo (mensual)" %>
   </div>
   <div class="field">
-    <%= f.label :payment_terms %><br>
-    <%= f.text_field :payment_terms %>
+    <%= f.label "Años en la compañía actual" %><br>
+    <%= f.text_field :company_years, label: "Años en la compañía actual" %>
   </div>
   <div class="field">
-    <%= f.label :bank %><br>
-    <%= f.text_field :bank %>
+    <%= f.label "Número del dependiente" %><br>
+    <%= f.text_field :dependents_number, label: "Número del dependiente" %>
   </div>
   <div class="field">
-    <%= f.label :comment %><br>
-    <%= f.text_field :comment %>
+    <%= f.label "Puesto dentro de la compañía" %><br>
+    <%= f.text_field :company_position, label: "Puesto dentro de la compañía" %>
+  </div>
+
+  <div>
+    Datos personales
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label "Años de residencia en domicilio actual" %><br>
+    <%= f.text_field :address_years, label: "Años de residencia en domicilio actual" %>
   </div>
   <div class="field">
-    <%= f.label :company_name %><br>
-    <%= f.text_field :company_name %>
+    <%= f.label "Estado civil" %><br>
+    <%= f.text_field :marital_status, label: "Estado civil" %>
   </div>
   <div class="field">
-    <%= f.label :company_phone_number %><br>
-    <%= f.text_field :company_phone_number %>
+    <%= f.label "¿Cuenta con SGMM?" %><br>
+    <%= f.check_box :has_sgmm, label: "¿Cuenta con SGMM?" %>
   </div>
   <div class="field">
-    <%= f.label :dependents_number %><br>
-    <%= f.text_field :dependents_number %>
+    <%= f.label "¿Cuenta con seguro del IMSS?" %><br>
+    <%= f.check_box :has_imss, label: "¿Cuenta con seguro del IMSS?" %>
   </div>
   <div class="field">
-    <%= f.label :company_position %><br>
-    <%= f.text_field :company_position %>
+    <%= f.label "¿Tiene automóvil?" %><br>
+    <%= f.check_box :has_car, label: "¿Tiene automóvil?" %>
+  </div>
+  <br>
+
+  <div>
+    Referencias
+  </div>
+  <br>
+  <div class="">
+    <button>Referencia 1</button>
+    <%= fields_for(@requisition.personal_references.build) do |r| %>
+      <div class="field">
+        <%= r.label "Nombre" %><br>
+        <%= r.text_field :first_name, label: "Nombre" %>
+      </div>
+      <div class="field">
+        <%= r.label "Segundo nombre" %><br>
+        <%= r.text_field :second_name, label: "Segundo nombre" %>
+      </div>
+      <div class="field">
+        <%= r.label "Apellido paterno" %><br>
+        <%= r.text_field :first_last_name, label: "Apellido paterno" %>
+      </div>
+      <div class="field">
+        <%= r.label "Apellido materno" %><br>
+        <%= r.text_field :second_last_name, label: "Apellido materno" %>
+      </div>
+      <div class="field">
+        <%= r.label "Teléfono celular" %><br>
+        <%= r.text_field :cell_phone_number, label: "Teléfono celular" %>
+      </div>
+    <% end %>
   </div>
   <div class="field">
-    <%= f.label :has_sgmm %><br>
-    <%= f.text_field :has_sgmm %>
-  </div>
-  <div class="field">
-    <%= f.label :has_imss %><br>
-    <%= f.text_field :has_imss %>
-  </div>
-  <div class="field">
-    <%= f.label :has_car %><br>
-    <%= f.text_field :has_car %>
-  </div>
-  <div class="field">
-    <%= f.label :profile_id %><br>
-    <%= f.text_field :profile_id %>
+    <%= f.label "Comentarios" %><br>
+    <%= f.text_area :comment, label: "Comentarios" %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Crear solicitud" %>
   </div>
 <% end %>
