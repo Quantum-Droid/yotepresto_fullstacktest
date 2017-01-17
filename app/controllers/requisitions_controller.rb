@@ -30,10 +30,11 @@ class RequisitionsController < ApplicationController
   # POST /requisitions
   # POST /requisitions.json
   def create
-    @requisition = @user.requisitions.new(requisition_params)
+    @requisition = Requisition.new(requisition_params)
+    @user.profile.requisitions << @requisition
 
     respond_to do |format|
-      if @user.save
+      if @user.save && @requisition.save
         format.html { redirect_to @requisition, notice: 'Requisition was successfully created.' }
         format.json { render :show, status: :created, location: @requisition }
       else

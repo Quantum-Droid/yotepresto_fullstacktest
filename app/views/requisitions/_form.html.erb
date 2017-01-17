@@ -1,3 +1,4 @@
+<div class="container">
 <%= form_for(@requisition) do |f| %>
   <% if @requisition.errors.any? %>
     <div id="error_explanation">
@@ -11,8 +12,10 @@
     </div>
   <% end %>
 
-  <div>
-    Datos de la solicitud
+  <div class="row">
+    <div class="col-sm-12" align="center">
+      <h2>Datos de la solicitud</h2>
+    </div>
   </div>
   <br>
   <div class="field">
@@ -28,8 +31,10 @@
     <%= f.text_field :bank, label: "Institución bancaria" %>
   </div>
 
-  <div>
-    Datos de su trabajo
+  <div class="row">
+    <div class="col-sm-12" align="center">
+      <h2>Datos de su trabajo</h2>
+    </div>
   </div>
   <br>
   <div class="field">
@@ -57,8 +62,10 @@
     <%= f.text_field :company_position, label: "Puesto dentro de la compañía" %>
   </div>
 
-  <div>
-    Datos personales
+  <div class="row">
+    <div class="col-sm-12" align="center">
+      <h2>Datos personales</h2>
+    </div>
   </div>
   <br>
   <div class="field">
@@ -83,40 +90,100 @@
   </div>
   <br>
 
-  <div>
-    Referencias
+  <div class="row">
+    <div class="col-sm-12" align="center">
+      <h2>Referencias</h2>
+    </div>
   </div>
-  <br>
-  <div class="">
-    <button>Referencia 1</button>
-    <%= fields_for(@requisition.personal_references.build) do |r| %>
-      <div class="field">
-        <%= r.label "Nombre" %><br>
-        <%= r.text_field :first_name, label: "Nombre" %>
-      </div>
-      <div class="field">
-        <%= r.label "Segundo nombre" %><br>
-        <%= r.text_field :second_name, label: "Segundo nombre" %>
-      </div>
-      <div class="field">
-        <%= r.label "Apellido paterno" %><br>
-        <%= r.text_field :first_last_name, label: "Apellido paterno" %>
-      </div>
-      <div class="field">
-        <%= r.label "Apellido materno" %><br>
-        <%= r.text_field :second_last_name, label: "Apellido materno" %>
-      </div>
-      <div class="field">
-        <%= r.label "Teléfono celular" %><br>
-        <%= r.text_field :cell_phone_number, label: "Teléfono celular" %>
-      </div>
-    <% end %>
+  <div class="row">
+    <%# References divided into collumns %>
+    <div class="col-md-4">
+      Referencia 1
+      <%= fields_for(@requisition.personal_references.build) do |r| %>
+        <div class="field">
+          <%= r.label "Nombre" %><br>
+          <%= r.text_field :first_name, label: "Nombre" %>
+        </div>
+        <div class="field">
+          <%= r.label "Segundo nombre" %><br>
+          <%= r.text_field :second_name, label: "Segundo nombre" %>
+        </div>
+        <div class="field">
+          <%= r.label "Apellido paterno" %><br>
+          <%= r.text_field :first_last_name, label: "Apellido paterno" %>
+        </div>
+        <div class="field">
+          <%= r.label "Apellido materno" %><br>
+          <%= r.text_field :second_last_name, label: "Apellido materno" %>
+        </div>
+        <div class="field">
+          <%= r.label "Teléfono celular" %><br>
+          <%= r.text_field :cell_phone_number, label: "Teléfono celular" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-4">
+      Referencia 2
+      <%= fields_for(@requisition.personal_references.build) do |r| %>
+        <div class="field">
+          <%= r.label "Nombre" %><br>
+          <%= r.text_field :first_name, label: "Nombre" %>
+        </div>
+        <div class="field">
+          <%= r.label "Segundo nombre" %><br>
+          <%= r.text_field :second_name, label: "Segundo nombre" %>
+        </div>
+        <div class="field">
+          <%= r.label "Apellido paterno" %><br>
+          <%= r.text_field :first_last_name, label: "Apellido paterno" %>
+        </div>
+        <div class="field">
+          <%= r.label "Apellido materno" %><br>
+          <%= r.text_field :second_last_name, label: "Apellido materno" %>
+        </div>
+        <div class="field">
+          <%= r.label "Teléfono celular" %><br>
+          <%= r.text_field :cell_phone_number, label: "Teléfono celular" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-4">
+      Referencia 3
+      <%= fields_for(@requisition.personal_references.build) do |r| %>
+        <div class="field">
+          <%= r.label "Nombre" %><br>
+          <%= r.text_field :first_name, label: "Nombre" %>
+        </div>
+        <div class="field">
+          <%= r.label "Segundo nombre" %><br>
+          <%= r.text_field :second_name, label: "Segundo nombre" %>
+        </div>
+        <div class="field">
+          <%= r.label "Apellido paterno" %><br>
+          <%= r.text_field :first_last_name, label: "Apellido paterno" %>
+        </div>
+        <div class="field">
+          <%= r.label "Apellido materno" %><br>
+          <%= r.text_field :second_last_name, label: "Apellido materno" %>
+        </div>
+        <div class="field">
+          <%= r.label "Teléfono celular" %><br>
+          <%= r.text_field :cell_phone_number, label: "Teléfono celular" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label "Comentarios" %><br>
-    <%= f.text_area :comment, label: "Comentarios" %>
+  <div class="field row">
+    <div class="col-md-12" align="center">
+      <h2>Comentarios</h2>
+      <br>
+      <%= f.text_area :comment, label: "Comentarios" %>
+    </div>
   </div>
-  <div class="actions">
+  <div class="actions row">
     <%= f.submit "Crear solicitud" %>
   </div>
 <% end %>
+</div>
